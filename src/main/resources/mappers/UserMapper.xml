@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.soft.market_management.dao.UserDao">
+
+    <select id="findUserByUsername" resultType="cn.soft.market_management.entity.SysUser">
+        select  * from  tb_user
+        where username=#{username}
+    </select>
+
+    <insert id="saveUser" parameterType="cn.soft.market_management.entity.SysUser">
+
+        INSERT INTO tb_user
+        VALUES
+        (null,#{username},#{password},#{salt},#{email},#{mobile},#{valid},
+         #{deptId},now(),#{modifiedTime},#{createdUser},#{modifiedUser})
+    </insert>
+    <sql id="queryId">
+        from tb_user
+        <where>
+            <if test="username!=null and username!=''">
+                username like concat("%",#{username},"%")
+            </if>
+        </where>
+    </sql>
+    <select id="getRowCount" resultType="int">
+        select count(*)
+        <include refid="queryId"></include>
+
+    </select>
+
+    <select id="findPageObjects" resultType="cn.soft.market_management.entity.SysUser">
+        select *
+        <include refid="queryId"></include>
+        order by createTime desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+</mapper>

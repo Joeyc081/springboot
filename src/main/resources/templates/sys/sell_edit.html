@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Sell</title>
+</head>
+<body>
+<form class="form-signin">
+    <h2 class="form-signin-heading outTitle"></h2>
+    <label for="pname" class="sr-only">商品名称</label>
+    <input type="text" id="pname" class="form-control" placeholder="商品名称" required autofocus>
+    <label for="sellprice" class="sr-only">售价</label>
+    <input type="text" id="sellprice" class="form-control" placeholder="售价" required autofocus>
+    <label for="amount" class="sr-only">数量</label>
+    <input type="text" id="amount" class="form-control" placeholder="数量" required autofocus>
+    <label for="address" class="sr-only">地址</label>
+    <input type="text" id="address" class="form-control" placeholder="地址" required>
+
+    <button id="btn-save" class="btn btn-lg btn-primary btn-block" type="button">提交</button>
+    <button id="btn-back" class="btn btn-lg btn-primary btn-block" type="button">返回</button>
+</form>
+</body>
+</html>
+<script>
+    $(function () {
+        $("#btn-save").click(dosaveobject);
+        $("#btn-back").click(doBack);
+    });
+    function dosaveobject() {
+        var pname = $("#pname").val();
+        var sellprice = $("#sellprice").val();
+        var amount = $("#amount").val();
+        var address = $("#address").val();
+        var url = "/sell/doSaveSell";
+        var params = {
+            "pname":pname,
+            "sellprice":sellprice,
+            "amount":amount,
+            "address":address
+        };
+        console.log("params",params);
+        $.post(url,params,function(result){
+            if(result.state==1){
+                alert("sucess");
+            }else{
+                alert("error");
+            }
+            return false;
+        });
+    }
+    function doBack() {
+        $("#mainID").data("rowData", "");
+        $("#mainID").load("/sys/sell_list");
+    }
+</script>

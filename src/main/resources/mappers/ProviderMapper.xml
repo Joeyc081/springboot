@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.soft.market_management.dao.ProviderDao">
+    <insert id="saveProvider" parameterType="cn.soft.market_management.entity.Provider">
+        insert into tb_provider
+        values
+        (null,#{proname},#{adr},#{tel},#{product})
+    </insert>
+    <select id="findPageObjects" resultType="cn.soft.market_management.entity.Provider">
+        select * from tb_provider
+        <where>
+            <if test="proname!=null and proname!=''">
+                proname like concat("%",#{proname},"%")
+            </if>
+        </where>
+        order by id desc
+        limit #{startIndex},#{pageSize}
+    </select>
+    <select id="getRowCount" resultType="int">
+        select count(*)from tb_provider
+        <where>
+            <if test="proname!=null and proname!=''">
+                proname like concat("%",#{proname},"%")
+            </if>
+        </where>
+    </select>
+    <delete id="deleteObjects">
+        delete from tb_provider
+        where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

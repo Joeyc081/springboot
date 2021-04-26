@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.soft.market_management.dao.DepotDao">
+    <insert id="saveDepot" parameterType="cn.soft.market_management.entity.Depot">
+        insert into tb_depot
+        values
+        (null,#{pname},#{amount},#{unit})
+    </insert>
+    <select id="findPageObjects" resultType="cn.soft.market_management.entity.Depot">
+        select * from tb_depot
+        <where>
+            <if test="pname!=null and pname!=''">
+                pname like concat("%",#{pname},"%")
+            </if>
+        </where>
+        order by id desc
+        limit #{startIndex},#{pageSize}
+    </select>
+    <select id="getRowCount" resultType="int">
+        select count(*)from tb_depot
+        <where>
+            <if test="pname!=null and pname!=''">
+                pname like concat("%",#{pname},"%")
+            </if>
+        </where>
+    </select>
+    <delete id="deleteObjects">
+    delete from tb_depot
+    where id in
+    <foreach collection="ids" open="(" close=")" separator="," item="id">
+        #{id}
+    </foreach>
+    </delete>
+    <resultMap id="BaseResultMap" type="cn.soft.market_management.entity.Depot">
+        <result column="pname" jdbcType="VARCHAR" property="pname" />
+        <result column="amount"  jdbcType="INTEGER" property="amount" />
+    </resultMap>
+        <select id="selectAll" parameterType="String" resultMap="BaseResultMap">
+                select pname,amount from tb_depot
+        </select>
+
+
+</mapper>

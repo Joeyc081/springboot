@@ -1,0 +1,45 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label"></label>
+    <div class="col-md-2 imgdiv"  style="width: 400px; display: inline;">
+        <form>
+            <input type="text" id="pname" class="form-control" placeholder="商品名称" required autofocus>
+            <input type="text" id="clas" class="form-control" placeholder="分类" required autofocus>
+            <input type="text" id="sellprice" class="form-control" placeholder="销售价格" required autofocus>
+
+            <button id="btn-save" class="btn btn-lg btn-primary btn-block" type="button">提交</button>
+            <button id="btn-back" class="btn btn-lg btn-primary btn-block" type="button">返回</button>
+        </form>
+    </div>
+
+</div>
+<script>
+    $(function () {
+        $("#btn-save").click(dosaveobject);
+        $("#btn-back").click(doBack);
+    });
+    function dosaveobject() {
+        var pname = $("#pname").val();
+        var clas = $("#clas").val();
+        var sellprice = $("#sellprice").val();
+        var url = "/product/doSaveProduct";
+        var params = {
+            "pname":pname,
+            "clas":clas,
+            "sellprice":sellprice,
+        };
+        console.log("params",params);
+        $.post(url,params,function(result){
+            if(result.state==1){
+                alert("添加成功");
+            }else{
+                alert("添加失败");
+            }
+            return false;
+        });
+    }
+    function doBack() {
+        $("#mainID").data("rowData", "");
+        $("#mainID").load("/sys/product_list");
+    }
+
+</script>

@@ -1,0 +1,48 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label"></label>
+    <div class="col-md-2 imgdiv"  style="width: 400px; display: inline;">
+        <form>
+            <input type="text" id="proname" class="form-control" placeholder="供应商名称" required autofocus>
+            <input type="text" id="adr" class="form-control" placeholder="地址" required autofocus>
+            <input type="text" id="tel" class="form-control" placeholder="电话" required autofocus>
+            <input type="text" id="product" class="form-control" placeholder="产品" required autofocus>
+
+            <button id="btn-save" class="btn btn-lg btn-primary btn-block" type="button">提交</button>
+            <button id="btn-back" class="btn btn-lg btn-primary btn-block" type="button">返回</button>
+        </form>
+    </div>
+
+</div>
+<script>
+    $(function () {
+        $("#btn-save").click(dosaveobject);
+        $("#btn-back").click(doBack);
+    });
+    function dosaveobject() {
+        var proname = $("#proname").val();
+        var adr = $("#adr").val();
+        var tel = $("#tel").val();
+        var product = $("#product").val();
+        var url = "/provider/doSaveProvider";
+        var params = {
+            "proname":proname,
+            "adr":adr,
+            "tel":tel,
+            "product":product
+        };
+        console.log("params",params);
+        $.post(url,params,function(result){
+            if(result.state==1){
+                alert("添加成功");
+            }else{
+                alert("添加失败");
+            }
+            return false;
+        });
+    }
+    function doBack() {
+        $("#mainID").data("rowData", "");
+        $("#mainID").load("/sys/provider_list");
+    }
+
+</script>

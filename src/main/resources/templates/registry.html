@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <title>注册页面</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="bootstrap-3.3.7/docs/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="bootstrap-3.3.7/docs/examples/signin/signin.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="bootstrap-3.3.7/docs/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="bootstrap-3.3.7/docs/assets/js/ie-emulation-modes-warning.js"></script>
+    <style>
+        body{
+            background-image: url("/img/login/back.jpg");
+            background-size: 100%;
+        }
+        .outTitle{
+            text-align: center;
+        }
+        .reg {
+            float: right;
+            color: ghostwhite;
+            padding-right: 3px;
+        }
+        .bugP{
+            color: red;
+            text-align: center;
+        }
+
+
+    </style>
+
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <form class="form-signin">
+        <h2 class="form-signin-heading outTitle">超市进销存系统</h2>
+        <p class="bugP"></p>
+        <label for="username" class="sr-only">请输入用户名</label>
+        <input type="text" id="username" class="form-control" placeholder="请输入用户名" required autofocus>
+        <label for="onepassward" class="sr-only">请输入密码</label>
+        <input type="password" id="onepassward" class="form-control" placeholder="请输入密码" required autofocus>
+        <label for="twopassword" class="sr-only">请再次密码</label>
+        <input type="password" id="twopassword" class="form-control" placeholder="请再次密码" required>
+        <label for="email" class="sr-only">请输入邮箱</label>
+        <input type="text" id="email" class="form-control" placeholder="请输入邮箱" required>
+        <label for="mobile" class="sr-only">请输入电话号码</label>
+        <input type="text" id="mobile" class="form-control" placeholder="请输入电话号码" required>
+        <div class="checkbox">
+            <a class="reg" href="/login">去登录</a>
+        </div>
+        <button id="regID" class="btn btn-lg btn-primary btn-block" type="button">注册</button>
+    </form>
+
+</div> <!-- /container -->
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/bootstrap-3.3.7/assets/js/ie10-viewport-bug-workaround.js"></script>
+<script src="/jquery/dist/jquery.min.js"></script>
+<script src="/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+<script>
+    $(function(){
+        $("#regID").click(doReg);
+    });
+    function doReg() {
+        //获取参数 --JSON格式进行传递
+        var OnePwd=$("#onepassward").val();
+        var TwoPwd=$("#twopassword").val();
+        if (OnePwd!=TwoPwd){
+            $(".bugP").html("两次密码不一致");
+            return;
+        }
+        //定义路径
+        var url="/user/doReg";
+        var params= {
+            username:$("#username").val(),
+            password: OnePwd,
+            email:$("#email").val(),
+            mobile:$("#mobile").val()
+        };
+        //打印到控制台
+        console.log(params);
+        //发送请求--Ajax2
+        $.post(url,params,function (result) {
+            if (result.state==1){
+                location.href="/Login";
+            }else {
+                //如果登陆失败了，那么将显示的信息出红框
+                $(".bugP").html(result.message);
+            }
+        })
+    }
+</script>
+</body>
+</html>
